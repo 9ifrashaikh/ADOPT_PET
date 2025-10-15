@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adopter Dashboard - Pet Adoption</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 30px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            color: #f5576c;
+            font-size: 28px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .logout-btn {
+            padding: 10px 20px;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .logout-btn:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+        }
+
+        .search-filter {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-filter h2 {
+            color: #f5576c;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .filter-group label {
+            color: #666;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .filter-group select:focus,
+        .filter-group input:focus {
+            outline: none;
+            border-color: #f5576c;
+        }
+
+        .search-btn {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-top: 15px;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(245, 87, 108, 0.3);
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h2 {
+            color: #f5576c;
+            margin-bottom: 20px;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .badge {
+            background: #f5576c;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .pet-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .pet-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .pet-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+        }
+
+        .pet-image {
+            width: 100%;
+            height: 220px;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 72px;
+            object-fit: cover;
+        }
+
+        .pet-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .pet-info {
+            padding: 18px;
+        }
+
+        .pet-info h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        .pet-info p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .pet-location {
+            color: #f5576c;
+            font-weight: 600;
+            margin-top: 8px;
+            display: block;
+        }
+
+        .pet-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            font-weight: 600;
+            flex: 1;
+            text-decoration: none;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .btn-apply {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+        }
+
+        .btn-apply:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(245, 87, 108, 0.3);
+        }
+
+        .btn-view {
+            background: #868e96;
+            color: white;
+        }
+
+        .btn-view:hover {
+            background: #495057;
+        }
+
+        .application-item {
+            padding: 20px;
+            background: #f8f9fa;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            border-left: 4px solid #f5576c;
+            transition: all 0.3s;
+        }
+
+        .application-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        .application-item h4 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .application-item p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .status-pending {
+            background: #fff3bf;
+            color: #996800;
+        }
+
+        .status-approved {
+            background: #d3f9d8;
+            color: #2b8a3e;
+        }
+
+        .status-rejected {
+            background: #ffe3e3;
+            color: #c92a2a;
+        }
+
+        .status-under-review {
+            background: #e7f5ff;
+            color: #1971c2;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #868e96;
+        }
+
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        .empty-state h3 {
+            color: #495057;
+            margin-bottom: 10px;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .alert-info {
+            background: #e7f5ff;
+            color: #1971c2;
+            border-left: 4px solid #1971c2;
+        }
+
+        .alert-success {
+            background: #d3f9d8;
+            color: #2b8a3e;
+            border-left: 4px solid #2b8a3e;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pet-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header with Dynamic User Info -->
+        <div class="header">
+            <h1>🐾 Find Your Perfect Pet</h1>
+            <div class="user-info">
+                <div class="user-avatar">
+                    {{ user.first_name[0]|upper if user.first_name else 'U' }}
+                </div>
+                <span style="font-weight: 600;">{{ user.first_name }} {{ user.last_name }}</span>
+                <a href="{{ url_for('auth.logout') }}" class="logout-btn">Logout</a>
+            </div>
+        </div>
+
+        <!-- Search & Filter Section -->
+        <div class="search-filter">
+            <h2>🔍 Search & Filter Pets</h2>
+            <form method="GET" action="{{ url_for('adopters.adopter_dashboard') }}">
+                <div class="filter-grid">
+                    <div class="filter-group">
+                        <label>Pet Type</label>
+                        <select name="species" id="pet-type">
+                            <option value="">All Types</option>
+                            <option value="Dog" {% if request.args.get('species') == 'Dog' %}selected{% endif %}>Dog</option>
+                            <option value="Cat" {% if request.args.get('species') == 'Cat' %}selected{% endif %}>Cat</option>
+                            <option value="Other" {% if request.args.get('species') == 'Other' %}selected{% endif %}>Other</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Breed</label>
+                        <input type="text" name="breed" id="breed" placeholder="Enter breed..." 
+                               value="{{ request.args.get('breed', '') }}">
+                    </div>
+                    <div class="filter-group">
+                        <label>Age Range</label>
+                        <select name="age_range" id="age">
+                            <option value="">Any Age</option>
+                            <option value="0-1" {% if request.args.get('age_range') == '0-1' %}selected{% endif %}>Puppy/Kitten (0-1 year)</option>
+                            <option value="1-3" {% if request.args.get('age_range') == '1-3' %}selected{% endif %}>Young (1-3 years)</option>
+                            <option value="3-7" {% if request.args.get('age_range') == '3-7' %}selected{% endif %}>Adult (3-7 years)</option>
+                            <option value="7+" {% if request.args.get('age_range') == '7+' %}selected{% endif %}>Senior (7+ years)</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Gender</label>
+                        <select name="gender" id="gender">
+                            <option value="">Any Gender</option>
+                            <option value="Male" {% if request.args.get('gender') == 'Male' %}selected{% endif %}>Male</option>
+                            <option value="Female" {% if request.args.get('gender') == 'Female' %}selected{% endif %}>Female</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Location</label>
+                        <input type="text" name="location" id="location" placeholder="City or State..." 
+                               value="{{ request.args.get('location', '') }}">
+                    </div>
+                    <div class="filter-group">
+                        <label>Size</label>
+                        <select name="size" id="size">
+                            <option value="">Any Size</option>
+                            <option value="Small" {% if request.args.get('size') == 'Small' %}selected{% endif %}>Small</option>
+                            <option value="Medium" {% if request.args.get('size') == 'Medium' %}selected{% endif %}>Medium</option>
+                            <option value="Large" {% if request.args.get('size') == 'Large' %}selected{% endif %}>Large</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="search-btn">Search Pets</button>
+            </form>
+        </div>
+
+        <div class="main-grid">
+            <!-- Recommended Pets Section -->
+            <div class="card">
+                {% if recommendations.type == 'personalized' %}
+                    <h2>❤️ Personalized Recommendations For You</h2>
+                    <div class="alert alert-info">
+                        ✨ Based on your preferences and browsing history
+                    </div>
+                {% elif recommendations.type == 'popular' %}
+                    <h2>🔥 Popular Pets Right Now</h2>
+                    <div class="alert alert-info">
+                        📊 Most viewed pets this week
+                    </div>
+                {% else %}
+                    <h2>🐾 Available Pets</h2>
+                {% endif %}
+
+                {% if recommendations.pets %}
+                    <div class="pet-grid">
+                        {% for pet in recommendations.pets %}
+                        <div class="pet-card">
+                            <div class="pet-image">
+                                {% if pet.image %}
+                                    <img src="{{ url_for('static', filename='uploads/' + pet.image) }}" 
+                                         alt="{{ pet.name }}">
+                                {% else %}
+                                    {% if pet.species == 'Dog' %}🐕
+                                    {% elif pet.species == 'Cat' %}🐈
+                                    {% elif pet.species == 'Bird' %}🐦
+                                    {% elif pet.species == 'Rabbit' %}🐰
+                                    {% else %}🐾
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                            <div class="pet-info">
+                                <h3>{{ pet.name }}</h3>
+                                <p><strong>Breed:</strong> {{ pet.breed }}</p>
+                                <p><strong>Age:</strong> {{ pet.age }} {% if pet.age == 1 %}year{% else %}years{% endif %} old</p>
+                                <p><strong>Gender:</strong> {{ pet.gender }}</p>
+                                {% if pet.size %}
+                                <p><strong>Size:</strong> {{ pet.size }}</p>
+                                {% endif %}
+                                <span class="pet-location">📍 {{ pet.shelter_name }}</span>
+                                <div class="pet-actions">
+                                    <a href="{{ url_for('adopters.adopter_form', pet_id=pet.pet_id) }}" 
+                                       class="btn btn-apply">Apply to Adopt</a>
+                                    <a href="{{ url_for('pets.pet_details', pet_id=pet.pet_id) }}" 
+                                       class="btn btn-view">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🔍</div>
+                        <h3>No pets found</h3>
+                        <p>Try adjusting your search filters</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Available Pets Section (if filtered) -->
+            {% if available_pets and available_pets != recommendations.pets %}
+            <div class="card">
+                <h2>🐾 All Available Pets</h2>
+                <div class="pet-grid">
+                    {% for pet in available_pets %}
+                    <div class="pet-card">
+                        <div class="pet-image">
+                            {% if pet.image %}
+                                <img src="{{ url_for('static', filename='uploads/' + pet.image) }}" 
+                                     alt="{{ pet.name }}">
+                            {% else %}
+                                {% if pet.species == 'Dog' %}🐕
+                                {% elif pet.species == 'Cat' %}🐈
+                                {% else %}🐾
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                        <div class="pet-info">
+                            <h3>{{ pet.name }}</h3>
+                            <p><strong>Breed:</strong> {{ pet.breed }}</p>
+                            <p><strong>Age:</strong> {{ pet.age }} years old</p>
+                            <p><strong>Gender:</strong> {{ pet.gender }}</p>
+                            <span class="pet-location">📍 {{ pet.shelter_name }}</span>
+                            <div class="pet-actions">
+                                <a href="{{ url_for('adopters.adopter_form', pet_id=pet.pet_id) }}" 
+                                   class="btn btn-apply">Apply to Adopt</a>
+                                <a href="{{ url_for('pets.pet_details', pet_id=pet.pet_id) }}" 
+                                   class="btn btn-view">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- My Applications Section -->
+            <div class="card">
+                <h2>📝 My Applications 
+                    {% if applications %}
+                        <span class="badge">{{ applications|length }}</span>
+                    {% endif %}
+                </h2>
+                
+                {% if applications %}
+                    {% for app in applications %}
+                    <div class="application-item">
+                        <h4>Application for {{ app.pet_name }} ({{ app.breed }})</h4>
+                        <p><strong>Shelter:</strong> {{ app.shelter_name }}</p>
+                        <p><strong>Applied:</strong> {{ app.application_date.strftime('%B %d, %Y') }}</p>
+                        
+                        {% if app.reviewed_at %}
+                        <p><strong>Last Update:</strong> {{ app.reviewed_at.strftime('%B %d, %Y') }}</p>
+                        {% endif %}
+                        
+                        {% if app.review_notes %}
+                        <p><strong>Notes:</strong> {{ app.review_notes }}</p>
+                        {% endif %}
+                        
+                        <span class="status-badge status-{{ app.status }}">
+                            {% if app.status == 'pending' %}⏳ Pending Review
+                            {% elif app.status == 'approved' %}✅ Approved
+                            {% elif app.status == 'rejected' %}❌ Rejected
+                            {% else %}{{ app.status|title }}
+                            {% endif %}
+                        </span>
+                    </div>
+                    {% endfor %}
+                    
+                    <div style="text-align: center; margin-top: 20px;">
+                        <a href="{{ url_for('adopters.my_applications') }}" 
+                           class="btn btn-view" style="max-width: 300px;">
+                            View All Applications
+                        </a>
+                    </div>
+                {% else %}
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📋</div>
+                        <h3>No applications yet</h3>
+                        <p>Start by applying to adopt a pet above!</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Track pet views for recommendations
+        function trackPetView(petId) {
+            fetch(`/api/track-view/${petId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+        }
+
+        // Add click tracking to pet cards
+        document.querySelectorAll('.pet-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                if (!e.target.classList.contains('btn')) {
+                    const petId = this.querySelector('.btn-apply').href.split('pet_id=')[1];
+                    if (petId) trackPetView(petId);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
