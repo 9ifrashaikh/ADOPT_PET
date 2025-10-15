@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 220px;
+      height: 100vh;
+      background: #4B0082; /* Royal Purple */
+      color: #fff;
+      position: fixed;
+      top: 0;
+      left: 0;
+      padding-top: 20px;
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 12px 20px;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .sidebar a:hover {
+      background: #6a0dad;
+    }
+
+    /* Main content */
+    .main {
+      margin-left: 220px;
+      padding: 20px;
+    }
+
+    .cards {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      flex: 1;
+      min-width: 200px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .card h3 {
+      margin: 10px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+
+    th {
+      background: #eee;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>Admin</h2>
+    <a href="#">Dashboard</a>
+    <a href="#">Users</a>
+    <a href="#">Shelters</a>
+    <a href="#">Pets</a>
+    <a href="#">Adoption Requests</a>
+    <a href="#">Reports</a>
+    <a href="#">Settings</a>
+    <a href="#">Logout</a>
+  </div>
+
+  <!-- Main content -->
+  <div class="main">
+    <h1>Welcome, Admin</h1>
+    <p>Here’s an overview of your system.</p>
+
+    <!-- Stat Cards -->
+    <div class="cards">
+      <div class="card">
+        <h3>120</h3>
+        <p>Total Users</p>
+      </div>
+      <div class="card">
+        <h3>15</h3>
+        <p>Total Shelters</p>
+      </div>
+      <div class="card">
+        <h3>85</h3>
+        <p>Total Pets</p>
+      </div>
+      <div class="card">
+        <h3>20</h3>
+        <p>Pending Adoptions</p>
+        <a href="/admin/pending-users">Pending Approvals</a>
+      </div>
+    </div>
+
+    <!-- Table Example -->
+    <h2 style="margin-top:30px;">Recent Adoption Requests</h2>
+    <table>
+      <tr>
+        <th>Request ID</th>
+        <th>Pet Name</th>
+        <th>Adopter</th>
+        <th>Status</th>
+      </tr>
+      <tr>
+        <td>REQ001</td>
+        <td>Buddy</td>
+        <td>John Doe</td>
+        <td>Pending</td>
+      </tr>
+      <tr>
+        <td>REQ002</td>
+        <td>Bella</td>
+        <td>Jane Smith</td>
+        <td>Approved</td>
+      </tr>
+      <tr>
+        <td>REQ003</td>
+        <td>Charlie</td>
+        <td>Sam Wilson</td>
+        <td>Rejected</td>
+      </tr>
+    </table>
+  </div>
+
+</body>
+<script>
+  // Check current page location
+  console.log("Current page URL:", window.location.href);
+  console.log("Current page path:", window.location.pathname);
+  
+  // Test if the link would work
+  const link = document.querySelector('a[href="pending_users.html"]');
+  if (link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault(); // Stop the navigation temporarily
+      const targetURL = new URL(this.href, window.location.href);
+      console.log("Trying to navigate to:", targetURL.href);
+      console.log("Link href attribute:", this.href);
+      
+      // Try to fetch the page to see if it exists
+      fetch(this.href)
+        .then(response => {
+          if (response.ok) {
+            console.log("✅ File exists! Navigating now...");
+            window.location.href = this.href;
+          } else {
+            console.error("❌ File NOT found! Status:", response.status);
+            alert("Error: File not found at " + this.href);
+          }
+        })
+        .catch(err => {
+          console.error("❌ Network error:", err);
+          alert("Cannot reach file: " + this.href);
+        });
+    });
+  }
+</script>
+</html>

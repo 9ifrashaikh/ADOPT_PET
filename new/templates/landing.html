@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PawHome - Find Your Perfect Pet Companion</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-success {
+            background: #4ecdc4;
+            color: white;
+        }
+
+        .btn-info {
+            background: #45b7d1;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #f39c12;
+            color: white;
+        }
+
+        .user-welcome {
+            color: white;
+            font-weight: 600;
+            margin-right: 1rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            z-index: 2;
+            color: white;
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .hero-buttons .btn {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 5rem 0;
+            background: white;
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #333;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #667eea;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        /* Stats Section */
+        .stats {
+            padding: 4rem 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+
+        /* Notification Toast */
+        .toast {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: #333;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            z-index: 9999;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            background: #4ecdc4;
+        }
+
+        .toast.error {
+            background: #ff6b6b;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <a href="/" class="logo">
+                    <i class="fas fa-paw"></i> PawHome
+                </a>
+                
+                <ul class="nav-links">
+                    <li><a href="/pets/our_pets">Browse Pets</a></li>
+                    <li><a href="/pets/shelter">Shelters</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                </ul>
+
+                <div id="auth-section" class="auth-buttons">
+                    <!-- Dynamic content will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Find Your Perfect Pet Companion</h1>
+                <p>Connect with loving pets in need of homes. Our platform makes pet adoption simple, safe, and meaningful.</p>
+                
+                <div id="hero-buttons" class="hero-buttons">
+                    <!-- Dynamic buttons will be inserted here based on user role -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2>Why Choose PawHome?</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <i class="fas fa-search"></i>
+                    <h3>Advanced Search</h3>
+                    <p>Find pets by breed, age, location, and personality traits. Our smart filters help you discover your perfect match.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-heart"></i>
+                    <h3>Safe Adoption Process</h3>
+                    <p>Verified shelters, background checks, and application tracking ensure safe and successful adoptions.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h3>Easy Application</h3>
+                    <p>Submit adoption applications online and track their status in real-time through your personal dashboard.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-stethoscope"></i>
+                    <h3>Health Records</h3>
+                    <p>Access complete medical histories, vaccination records, and health information for every pet.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-users"></i>
+                    <h3>Community Support</h3>
+                    <p>Connect with other pet owners, get advice, and share your adoption journey with our community.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-robot"></i>
+                    <h3>AI Recommendations</h3>
+                    <p>Get personalized pet recommendations based on your lifestyle, preferences, and living situation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3 id="pets-adopted">1,247+</h3>
+                    <p>Pets Adopted</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="happy-families">956+</h3>
+                    <p>Happy Families</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="partner-shelters">47+</h3>
+                    <p>Partner Shelters</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="success-rate">98%</h3>
+                    <p>Success Rate</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Loading Spinner -->
+    <div id="loading" class="loading">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // Global variables
+        let currentUser = null;
+
+        // Initialize page when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initializePage();
+        });
+
+        async function initializePage() {
+            showLoading(true);
+            await checkAuthenticationStatus();
+            updateUIBasedOnAuth();
+            showLoading(false);
+        }
+
+        async function checkAuthenticationStatus() {
+            const token = localStorage.getItem('access_token');
+            
+            if (!token) {
+                currentUser = null;
+                return;
+            }
+
+            try {
+                const response = await fetch('/auth/me', {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    currentUser = data.user;
+                    console.log('User authenticated:', currentUser);
+                } else {
+                    // Token is invalid, clear it
+                    localStorage.removeItem('access_token');
+                    localStorage.removeItem('refresh_token');
+                    localStorage.removeItem('user');
+                    currentUser = null;
+                }
+            } catch (error) {
+                console.error('Auth check failed:', error);
+                currentUser = null;
+            }
+        }
+
+        function updateUIBasedOnAuth() {
+            const authSection = document.getElementById('auth-section');
+            const heroButtons = document.getElementById('hero-buttons');
+
+            if (!currentUser) {
+                // Guest user - show login/register
+                authSection.innerHTML = `
+                    <a href="/auth/login" class="btn btn-primary">Login</a>
+                    <a href="/auth/register" class="btn btn-secondary">Register</a>
+                `;
+
+                heroButtons.innerHTML = `
+                    <a href="/pets/our_pets" class="btn btn-primary">
+                        <i class="fas fa-search"></i> Browse Pets
+                    </a>
+                    <a href="/auth/register" class="btn btn-secondary">
+                        <i class="fas fa-user-plus"></i> Start Your Journey
+                    </a>
+                `;
+            } else {
+                // Logged in user - show role-specific content
+                showLoggedInContent(currentUser);
+            }
+        }
+
+        function showLoggedInContent(user) {
+            const authSection = document.getElementById('auth-section');
+            const heroButtons = document.getElementById('hero-buttons');
+
+            // Common elements
+            const welcomeText = `
+                <span class="user-welcome">
+                    <i class="fas fa-user"></i> Welcome, ${user.first_name}!
+                </span>
+            `;
+
+            const logoutButton = `
+                <button onclick="logout()" class="btn btn-danger">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            `;
+
+            if (user.role === 'admin') {
+                authSection.innerHTML = `
+                    ${welcomeText}
+                    <a href="/admin/new_page" class="btn btn-primary">
+                        <i class="fas fa-cog"></i> Admin Dashboard
+                    </a>
+                    ${logoutButton}
+                `;
+
+                heroButtons.innerHTML = `
+                    <a href="/admin/new_page" class="btn btn-primary">
+                        <i class="fas fa-tachometer-alt"></i> Admin Dashboard
+                    </a>
+                    <a href="/admin/add_pet_form" class="btn btn-success">
+                        <i class="fas fa-plus"></i> Add New Pet
+                    </a>
+                    <a href="/admin/shelters" class="btn btn-info">
+                        <i class="fas fa-building"></i> Manage Shelters
+                    </a>
+                `;
+
+            } else if (user.role === 'adopter') {
+                authSection.innerHTML = `
+                    ${welcomeText}
+                    <a href="/adopters/adopter_dashboard" class="btn btn-primary">
+                        <i class="fas fa-home"></i> My Dashboard
+                    </a>
+                    <a href="/adopters/my_applications" class="btn btn-info">
+                        <i class="fas fa-file-alt"></i> My Applications
+                    </a>
+                    ${logoutButton}
+                `;
+
+                heroButtons.innerHTML = `
+                    <a href="/adopters/adopter_dashboard" class="btn btn-primary">
+                        <i class="fas fa-home"></i> My Dashboard
+                    </a>
+                    <a href="/pets/our_pets" class="btn btn-success">
+                        <i class="fas fa-search"></i> Find Pets
+                    </a>
+                    <a href="/adopters/recommendations" class="btn btn-info">
+                        <i class="fas fa-magic"></i> AI Recommendations
+                    </a>
+                    <a href="/adopters/my_applications" class="btn btn-secondary">
+                        <i class="fas fa-clipboard-list"></i> Track Applications
+                    </a>
+                `;
+
+            } else if (user.role === 'shelter_staff') {
+                authSection.innerHTML = `
+                    ${welcomeText}
+                    <a href="/adoptions/pending-applications" class="btn btn-primary">
+                        <i class="fas fa-clipboard-check"></i> Review Applications
+                    </a>
+                    ${logoutButton}
+                `;
+
+                heroButtons.innerHTML = `
+                    <a href="/adoptions/pending-applications" class="btn btn-primary">
+                        <i class="fas fa-clipboard-check"></i> Pending Applications
+                    </a>
+                    <a href="/adoptions/all-applications" class="btn btn-info">
+                        <i class="fas fa-history"></i> Application History
+                    </a>
+                    <a href="/pets/our_pets" class="btn btn-secondary">
+                        <i class="fas fa-eye"></i> View All Pets
+                    </a>
+                `;
+            }
+        }
+
+        async function logout() {
+            try {
+                // Clear local storage
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('refresh_token');
+                localStorage.removeItem('user');
+                
+                // Optional: Call logout endpoint if you have one
+                // await fetch('/auth/logout', { method: 'POST' });
+                
+                currentUser = null;
+                updateUIBasedOnAuth();
+                showToast('Logged out successfully!', 'success');
+                
+                // Refresh the page to ensure clean state
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+                
+            } catch (error) {
+                console.error('Logout error:', error);
+                showToast('Logout failed', 'error');
+            }
+        }
+
+        function showLoading(show) {
+            const loading = document.getElementById('loading');
+            loading.style.display = show ? 'block' : 'none';
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type}`;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Utility function to make authenticated API calls
+        async function makeAuthenticatedRequest(url, options = {}) {
+            const token = localStorage.getItem('access_token');
+            
+            if (!token) {
+                throw new Error('No authentication token');
+            }
+
+            const defaultOptions = {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json'
+                }
+            };
+
+            const mergedOptions = {
+                ...defaultOptions,
+                ...options,
+                headers: {
+                    ...defaultOptions.headers,
+                    ...options.headers
+                }
+            };
+
+            const response = await fetch(url, mergedOptions);
+            
+            if (response.status === 401) {
+                // Token expired or invalid, redirect to login
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('refresh_token');
+                localStorage.removeItem('user');
+                window.location.href = '/auth/login';
+                throw new Error('Authentication required');
+            }
+
+            return response;
+        }
+
+        // Global error handler for unhandled promise rejections
+        window.addEventListener('unhandledrejection', function(event) {
+            console.error('Unhandled promise rejection:', event.reason);
+            showToast('Something went wrong. Please try again.', 'error');
+        });
+
+        // Check if user is returning from login/register
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('login') === 'success') {
+            showToast('Welcome back!', 'success');
+        } else if (urlParams.get('register') === 'success') {
+            showToast('Registration successful! Please login.', 'success');
+        }
+    </script>
+</body>
+</html>

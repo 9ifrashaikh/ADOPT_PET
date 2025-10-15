@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pending User Approvals</title>
+    <style>
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
+        .btn { padding: 5px 10px; margin: 2px; cursor: pointer; }
+        .approve { background: green; color: white; }
+        .reject { background: red; color: white; }
+    </style>
+</head>
+<body>
+    <h1>Pending User Approvals</h1>
+    
+    <!-- DEBUG: Add this temporarily to see user data -->
+    <pre style="background: #f0f0f0; padding: 10px; overflow: auto; max-height: 200px;">
+    {{ users | tojson(indent=2) }}
+    </pre>
+    
+    {% if users %}
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Shelter</th>
+            <th>Phone</th>
+            <th>Actions</th>
+        </tr>
+        {% for u in users %}
+        <tr id="user-{{ u.id }}">
+            <td>{{ u.first_name }} {{ u.last_name }}</td>
+            <td>{{ u.email }}</td>
+            <td>{{ u.role }}</td>
+            <td>{{ u.shelter_name or 'N/A' }}</td>
+            <td>{{ u.phone or 'N/A' }}</td>
+            <td>
+               <button class="btn approve" onclick="approveUser('{{ u.id }}')">Approve</button>
+               <button class="btn reject" onclick="rejectUser('{{ u.id }}')">Reject</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p>No pending approvals</p>
+    {% endif %}
+
+    <script>
+        console.log("✅ pending_users.html loaded successfully!");
+        console.log("Page URL:", window.location.href);
+
+        async function approveUser(userId) {
+            console.log("approveUser called with:", userId); // Debug
+            
+            if (!confirm('Approve this user?')) return;
+            
+            try {
+                const response = await fetch(`/admin/approve-user/${userId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                console.log('Response status:', response.status);
+                console.log('Response headers:', response.headers.get('content-type'));
+                
+                if (!response.ok) {
+                    const text = await response.text();
+                    console.error('Error response:', text);
+                    alert(`Error: Server returned ${response.status}`);
+                    return;
+                }
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById(`user-${userId}`).remove();
+                    alert('User approved!');
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Fetch error:', error);
+                alert('Network error: ' + error.message);
+            }
+        }
+
+        async function rejectUser(userId) {
+            console.log("rejectUser called with:", userId); // Debug
+            
+            if (!confirm('Reject this user?')) return;
+            
+            try {
+                const response = await fetch(`/admin/reject-user/${userId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                console.log('Response status:', response.status);
+                console.log('Response headers:', response.headers.get('content-type'));
+                
+                if (!response.ok) {
+                    const text = await response.text();
+                    console.error('Error response:', text);
+                    alert(`Error: Server returned ${response.status}`);
+                    return;
+                }
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById(`user-${userId}`).remove();
+                    alert('User rejected!');
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Fetch error:', error);
+                alert('Network error: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html>
